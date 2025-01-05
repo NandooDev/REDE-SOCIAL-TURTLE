@@ -11,8 +11,8 @@ export interface IUserModel {
   role: ERole;
   company_code: string;
   profile_photo?: string;
-  created_at?: string;
-  updated_at?: string;
+  created_at?: Date;
+  updated_at?: Date;
   posts?: IPostModel[];
   coments?: IComentModel[];
 }

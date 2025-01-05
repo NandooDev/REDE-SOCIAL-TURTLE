@@ -1,5 +1,7 @@
+import { IPostModel } from "./iPostModel";
+
 export interface ILikeModel {
   id?: string;
-  id_post?: string;
+  posts?: IPostModel[];
   id_user?: string;
 }
