@@ -1,10 +1,18 @@
+import { ERole } from "./eRole";
+import { IComentModel } from "./iComentModel";
+import { IPostModel } from "./iPostModel";
+
 export interface IUserModel {
-  username: string;
+  id?: string;
   name: string;
   email: string;
   password: string;
-  cargo: string;
-  profile_photo?: string;
-  role: "admin" | "user";
+  position: string;
+  role: ERole;
   company_code: string;
+  profile_photo?: string;
+  created_at?: string;
+  updated_at?: string;
+  posts?: IPostModel[];
+  coments?: IComentModel[];
 }

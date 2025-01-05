@@ -1,6 +1,8 @@
 export interface IPostModel {
+  id?: string;
   title: string;
   content: string;
-  anexo?: string;
-  id_user: string;
+  attachment?: string;
+  id_user?: string;
+  created_at?: string;
 }
