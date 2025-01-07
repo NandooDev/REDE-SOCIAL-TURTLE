@@ -3,6 +3,8 @@ import { GetUsersController } from "../../controllers/user/get-users/getUsersCon
 import { GetUsersRepository } from "../../repositories/user/getUsers/getUsersRepository";
 import { CreateUsersRepository } from "../../repositories/user/createUsers/createUsersRepository";
 import { CreateUsersController } from "../../controllers/user/createUsers/createUsersController";
+import { UpdateUsersRepository } from "../../repositories/user/updateUsers/updateUsersRepository";
+import { UpdateUsersController } from "../../controllers/user/updateUsers/updateUsersController";
 
 const userRoutes: Router = Router();
 
@@ -25,6 +27,21 @@ userRoutes.post("/create", async (req, res) => {
 
   const { body, statusCode } = await createUsersController.handle({
     body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+userRoutes.patch("/update/:id", async (req, res) => {
+  const updateUsersRepository = new UpdateUsersRepository();
+
+  const updateUsersController = new UpdateUsersController(
+    updateUsersRepository
+  );
+
+  const { body, statusCode } = await updateUsersController.handle({
+    body: req.body,
+    params: req.params,
   });
 
   res.status(statusCode).send(body);

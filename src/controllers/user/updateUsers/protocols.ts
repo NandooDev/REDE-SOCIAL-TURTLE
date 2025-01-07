@@ -1,8 +1,5 @@
 import { IUserModel } from "../../../models/iUserModel";
-
-export interface IUpdateUsersController {
-  handle(): Promise<IUserModel>;
-}
+import { IHttpRequest, IHttpResponse } from "../../protocols";
 
 export interface IUpdateUsersParams {
   name?: string;
@@ -11,6 +8,10 @@ export interface IUpdateUsersParams {
   profile_phote?: string;
   position?: string;
   company_code?: string;
+}
+
+export interface IUpdateUsersController {
+  handle(httpRequest: IHttpRequest<any>): Promise<IHttpResponse<IUserModel>>;
 }
 
 export interface IUpdateUsersRepository {
