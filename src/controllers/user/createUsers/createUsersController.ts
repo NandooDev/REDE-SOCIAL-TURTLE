@@ -1,3 +1,4 @@
+import validator from "validator";
 import { IUserModel } from "../../../models/iUserModel";
 import { IHttpRequest, IHttpResponse } from "../../protocols";
 import {
@@ -12,16 +13,38 @@ export class CreateUsersController implements ICreateUsersController {
     httpRequest: IHttpRequest<ICreateUsersParams>
   ): Promise<IHttpResponse<IUserModel>> {
     try {
-      // validar se body existe
-      if (!httpRequest.body) {
+      // verificar campos obrigatórios
+      const requiredFields = [
+        "name",
+        "username",
+        "email",
+        "password",
+        "position",
+        "role",
+        "company_code",
+      ];
+
+      for (const field of requiredFields) {
+        if (!httpRequest?.body?.[field as keyof ICreateUsersParams]?.length) {
+          return {
+            statusCode: 400,
+            body: `Field ${field} is required`,
+          };
+        }
+      }
+
+      //verificar se o email é valido
+      const emailIsValid = validator.isEmail(httpRequest.body!.email);
+
+      if (!emailIsValid) {
         return {
           statusCode: 400,
-          body: "Please specify a body",
+          body: `Email is invalid`,
         };
       }
 
       const user = await this.createUsersRepository.createUsers(
-        httpRequest.body
+        httpRequest.body!
       );
 
       return {

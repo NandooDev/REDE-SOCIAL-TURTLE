@@ -13,7 +13,7 @@ userRoutes.get("/", async (req, res) => {
 
   const { body, statusCode } = await getUsersController.handle();
 
-  res.send(body).status(statusCode);
+  res.status(statusCode).send(body);
 });
 
 userRoutes.post("/create", async (req, res) => {
@@ -27,7 +27,7 @@ userRoutes.post("/create", async (req, res) => {
     body: req.body,
   });
 
-  res.send(body).status(statusCode);
+  res.status(statusCode).send(body);
 });
 
 export { userRoutes };
