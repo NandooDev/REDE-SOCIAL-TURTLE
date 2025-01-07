@@ -5,6 +5,8 @@ import { CreateUsersRepository } from "../../repositories/user/createUsers/creat
 import { CreateUsersController } from "../../controllers/user/createUsers/createUsersController";
 import { UpdateUsersRepository } from "../../repositories/user/updateUsers/updateUsersRepository";
 import { UpdateUsersController } from "../../controllers/user/updateUsers/updateUsersController";
+import { DeleteUsersRepository } from "../../repositories/user/deleteUsers/deleteUsersRepository";
+import { DeleteUsersController } from "../../controllers/user/deleteUsers/deleteUsersController";
 
 const userRoutes: Router = Router();
 
@@ -41,6 +43,20 @@ userRoutes.patch("/update/:id", async (req, res) => {
 
   const { body, statusCode } = await updateUsersController.handle({
     body: req.body,
+    params: req.params,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+userRoutes.delete("/delete/:id", async (req, res) => {
+  const deleteUsersRepository = new DeleteUsersRepository();
+
+  const deleteUsersController = new DeleteUsersController(
+    deleteUsersRepository
+  );
+
+  const { body, statusCode } = await deleteUsersController.handle({
     params: req.params,
   });
 
