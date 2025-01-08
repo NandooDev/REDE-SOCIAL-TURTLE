@@ -27,6 +27,7 @@
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.3",
     "@types/validator": "^13.12.2",
+    "bcrypt": "^5.1.1",
     "express": "^4.21.2",
     "prisma": "^6.1.0",
     "validator": "^13.12.0"

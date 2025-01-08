@@ -5,10 +5,14 @@ import {
   ICreateUsersController,
   ICreateUsersParams,
   ICreateUsersRepository,
+  ICryptographyPassword,
 } from "./protocols";
 
 export class CreateUsersController implements ICreateUsersController {
-  constructor(private readonly createUsersRepository: ICreateUsersRepository) {}
+  constructor(
+    private readonly createUsersRepository: ICreateUsersRepository,
+    private readonly cryptographyPassword: ICryptographyPassword
+  ) {}
   async handle(
     httpRequest: IHttpRequest<ICreateUsersParams>
   ): Promise<IHttpResponse<IUserModel>> {
@@ -43,15 +47,23 @@ export class CreateUsersController implements ICreateUsersController {
         };
       }
 
-      const user = await this.createUsersRepository.createUsers(
-        httpRequest.body!
-      );
+      const { password, ...userData } = httpRequest.body!;
+
+      //criptografar senha
+      const passwordCryptography =
+        await this.cryptographyPassword.execute(password);
+
+      const user = await this.createUsersRepository.createUsers({
+        ...userData,
+        password: passwordCryptography,
+      });
 
       return {
         statusCode: 201,
         body: user,
       };
     } catch (error) {
+      console.log(error);
       return {
         statusCode: 500,
         body: "Something went wrong",

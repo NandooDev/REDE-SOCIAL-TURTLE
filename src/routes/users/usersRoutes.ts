@@ -7,6 +7,7 @@ import { UpdateUsersRepository } from "../../repositories/user/updateUsers/updat
 import { UpdateUsersController } from "../../controllers/user/updateUsers/updateUsersController";
 import { DeleteUsersRepository } from "../../repositories/user/deleteUsers/deleteUsersRepository";
 import { DeleteUsersController } from "../../controllers/user/deleteUsers/deleteUsersController";
+import { CryptographyPassword } from "../../cryptography/cryptographyPassword";
 
 const userRoutes: Router = Router();
 
@@ -22,9 +23,11 @@ userRoutes.get("/", async (req, res) => {
 
 userRoutes.post("/create", async (req, res) => {
   const createUsersRepository = new CreateUsersRepository();
+  const cryptographyPassword = new CryptographyPassword();
 
   const createUsersController = new CreateUsersController(
-    createUsersRepository
+    createUsersRepository,
+    cryptographyPassword
   );
 
   const { body, statusCode } = await createUsersController.handle({
