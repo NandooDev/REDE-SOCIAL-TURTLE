@@ -8,6 +8,8 @@ import { UpdateUsersController } from "../../controllers/user/updateUsers/update
 import { DeleteUsersRepository } from "../../repositories/user/deleteUsers/deleteUsersRepository";
 import { DeleteUsersController } from "../../controllers/user/deleteUsers/deleteUsersController";
 import { CryptographyPassword } from "../../cryptography/cryptographyPassword";
+import { LoginUsersRepository } from "../../repositories/user/loginUsers/loginUsersRepository";
+import { LoginUsersController } from "../../controllers/user/loginUsers/loginUsersController";
 
 const userRoutes: Router = Router();
 
@@ -61,6 +63,18 @@ userRoutes.delete("/delete/:id", async (req, res) => {
 
   const { body, statusCode } = await deleteUsersController.handle({
     params: req.params,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+userRoutes.get("/login", async (req, res) => {
+  const loginUsersRepository = new LoginUsersRepository();
+
+  const loginUsersController = new LoginUsersController(loginUsersRepository);
+
+  const { body, statusCode } = await loginUsersController.handle({
+    body: req.body,
   });
 
   res.status(statusCode).send(body);
