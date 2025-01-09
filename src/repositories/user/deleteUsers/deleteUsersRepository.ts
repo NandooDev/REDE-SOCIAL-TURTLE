@@ -5,19 +5,24 @@ const prisma = new PrismaClient();
 
 export class DeleteUsersRepository implements IDeleteUsersRepository {
   async deleteUsers(id: string): Promise<string> {
-    await prisma.users.delete({
-      where: {
-        id: id,
-      },
-    });
-
-    // validar se usuário foi deletado
+    // validar se usuário existe
     const user = await prisma.users.findUnique({
       where: {
         id: id,
       },
     });
 
+    if (!user) {
+      throw new Error("User not exists");
+    }
+
+    await prisma.users.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    //validar se user foi deletado
     if (user) {
       throw new Error("User not deleted");
     }
