@@ -6,7 +6,11 @@ const prisma = new PrismaClient();
 
 export class GetUsersRepository implements IGetUsersRepository {
   async getUsers(): Promise<IUserModel[]> {
-    const users: IUserModel = await prisma.users.findMany();
-    return users;
+    try {
+      const users: IUserModel = await prisma.users.findMany();
+      return users;
+    } finally {
+      await prisma.$disconnect();
+    }
   }
 }

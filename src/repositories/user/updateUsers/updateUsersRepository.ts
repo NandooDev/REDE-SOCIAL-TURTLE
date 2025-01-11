@@ -12,23 +12,27 @@ export class UpdateUsersRepository implements IUpdateUsersRepository {
     id: string,
     params: IUpdateUsersParams
   ): Promise<IUserModel> {
-    await prisma.users.update({
-      where: {
-        id: id,
-      },
-      data: params,
-    });
+    try {
+      await prisma.users.update({
+        where: {
+          id: id,
+        },
+        data: params,
+      });
 
-    const user = await prisma.users.findUnique({
-      where: {
-        id: id,
-      },
-    });
+      const user = await prisma.users.findUnique({
+        where: {
+          id: id,
+        },
+      });
 
-    if (!user) {
-      throw new Error("User not updated");
+      if (!user) {
+        throw new Error("User not updated");
+      }
+
+      return user;
+    } finally {
+      await prisma.$disconnect();
     }
-
-    return user;
   }
 }

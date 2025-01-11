@@ -9,33 +9,37 @@ const prisma = new PrismaClient();
 
 export class LoginUsersRepository implements ILoginUsersRepository {
   async loginUsers(loginParams: IUserParamsLogin): Promise<boolean> {
-    // verificar se email existe no banco de dados
-    const passwordCriptography = await prisma.users.findUnique({
-      where: {
-        email: loginParams.email,
-      },
-      select: {
-        password: true,
-      },
-    });
+    try {
+      // verificar se email existe no banco de dados
+      const passwordCriptography = await prisma.users.findUnique({
+        where: {
+          email: loginParams.email,
+        },
+        select: {
+          password: true,
+        },
+      });
 
-    if (!passwordCriptography) {
-      return false;
-    }
+      if (!passwordCriptography) {
+        return false;
+      }
 
-    const password: string = loginParams.password;
+      const password: string = loginParams.password;
 
-    const verifyPassword = new VerifyPassword()
+      const verifyPassword = new VerifyPassword();
 
-    const passwordVerify = await verifyPassword.verify(
+      const passwordVerify = await verifyPassword.verify(
         password,
         passwordCriptography.password
       );
 
-    if (!passwordVerify) {
-      return false;
-    }
+      if (!passwordVerify) {
+        return false;
+      }
 
-    return true;
+      return true;
+    } finally {
+      await prisma.$disconnect();
+    }
   }
 }

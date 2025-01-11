@@ -9,14 +9,18 @@ const prisma = new PrismaClient();
 
 export class CreateUsersRepository implements ICreateUsersRepository {
   async createUsers(params: ICreateUsersParams): Promise<IUserModel> {
-    const user = await prisma.users.create({
-      data: params,
-    });
+    try {
+      const user = await prisma.users.create({
+        data: params,
+      });
 
-    if (!user) {
-      throw new Error("User not created");
+      if (!user) {
+        throw new Error("User not created");
+      }
+
+      return user;
+    } finally {
+      await prisma.$disconnect();
     }
-
-    return user;
   }
 }
