@@ -3,5 +3,5 @@ export interface IProfileModel {
   bio: string;
   created_at: Date;
   updated_at: Date;
-  id_user?: string;
+  id_user: string;
 }

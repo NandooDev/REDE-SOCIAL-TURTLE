@@ -1,7 +1,7 @@
 import { IProfileModel } from "../../../../models/iProfileModel";
 import { IHttpRequest, IHttpResponse } from "../../../protocols";
 
-export interface IProfileController {
+export interface ICreateProfileController {
   handle(
     httpRequest: IHttpRequest<IProfileModel>
   ): Promise<IHttpResponse<IProfileModel>>;
@@ -12,6 +12,6 @@ export interface IParamsProfile {
   id_user: string;
 }
 
-export interface IProfileRepository {
+export interface ICreateProfileRepository {
   createProfile(params: IParamsProfile): Promise<IProfileModel>;
 }
