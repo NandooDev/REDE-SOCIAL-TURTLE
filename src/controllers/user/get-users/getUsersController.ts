@@ -1,17 +1,17 @@
-import { IGetUsersController, IGetUsersRepository } from "./protocols";
+import { IGetProfilesController, IGetProfilesRepository } from "../profileUsers/getProfiles/protocols";
 
-export class GetUsersController implements IGetUsersController {
-  constructor(private readonly getUsersRepository: IGetUsersRepository) {}
+export class GetUsersController implements IGetProfilesController {
+  constructor(private readonly getUsersRepository: IGetProfilesRepository) {}
 
   async handle() {
     try {
       // validar requisição
       // direcionar chamada para repository
-      const users = await this.getUsersRepository.getUsers();
+      const profiles = await this.getUsersRepository.getProfiles();
 
       return {
         statusCode: 200,
-        body: users,
+        body: profiles,
       };
     } catch (error) {
       return {
