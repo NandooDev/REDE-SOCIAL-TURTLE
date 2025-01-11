@@ -1,5 +1,5 @@
 import { PrismaClient } from "../../../../node_modules/.prisma/client/index";
-import { IGetUsersRepository } from "../../../controllers/user/get-users/protocols";
+import { IGetUsersRepository } from "../../../controllers/user/getUsers/protocols";
 import { IUserModel } from "../../../models/iUserModel";
 
 const prisma = new PrismaClient();

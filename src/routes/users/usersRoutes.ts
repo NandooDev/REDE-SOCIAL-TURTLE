@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { GetUsersController } from "../../controllers/user/get-users/getUsersController";
+import { GetUsersController } from "../../controllers/user/getUsers/getUsersController";
 import { GetUsersRepository } from "../../repositories/user/getUsers/getUsersRepository";
 import { CreateUsersRepository } from "../../repositories/user/createUsers/createUsersRepository";
 import { CreateUsersController } from "../../controllers/user/createUsers/createUsersController";
@@ -10,6 +10,8 @@ import { DeleteUsersController } from "../../controllers/user/deleteUsers/delete
 import { CryptographyPassword } from "../../cryptography/cryptographyPassword";
 import { LoginUsersRepository } from "../../repositories/user/loginUsers/loginUsersRepository";
 import { LoginUsersController } from "../../controllers/user/loginUsers/loginUsersController";
+import { GetUsersByUsernameRepository } from "../../repositories/user/getUsersByUsername/getProfilesByUsernameRepository";
+import { GetUsersByUsernameController } from "../../controllers/user/getUsersByUsername/getUsersByUsernameController";
 
 const userRoutes: Router = Router();
 
@@ -74,6 +76,22 @@ userRoutes.get("/login", async (req, res) => {
   const loginUsersController = new LoginUsersController(loginUsersRepository);
 
   const { body, statusCode } = await loginUsersController.handle({
+    body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+userRoutes.get("/findUsername", async (req, res) => {
+  const getUsersByUsernameRepository = new GetUsersByUsernameRepository();
+
+  const getUsersByUsernameController = new GetUsersByUsernameController(
+    getUsersByUsernameRepository
+  );
+
+  console.log(req.body.username);
+
+  const { body, statusCode } = await getUsersByUsernameController.handle({
     body: req.body,
   });
 
