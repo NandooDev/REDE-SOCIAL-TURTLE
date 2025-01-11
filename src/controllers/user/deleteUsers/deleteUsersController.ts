@@ -12,6 +12,7 @@ export class DeleteUsersController implements IDeleteUsersController {
         body: "User deleted successfully",
       };
     } catch (error) {
+      console.log(error)
       return {
         statusCode: 500,
         body: "Something went wrong",
