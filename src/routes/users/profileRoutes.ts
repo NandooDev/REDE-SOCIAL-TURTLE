@@ -3,6 +3,8 @@ import { GetProfilesController } from "../../controllers/user/profileUsers/getPr
 import { GetProfilesRepository } from "../../repositories/user/profileUsers/getProfiles/getProfilesRepository";
 import { CreateProfileRepository } from "../../repositories/user/profileUsers/createProfile/createProfileRepository";
 import { CreateProfileController } from "../../controllers/user/profileUsers/createProfile/createProfileController";
+import { UpdateProfileRepository } from "../../repositories/user/profileUsers/updateProfile/updateProfileRepository";
+import { UpdateProfileController } from "../../controllers/user/profileUsers/updateProfile/updateProfileController";
 
 const profileRoutes: Router = Router();
 
@@ -25,6 +27,20 @@ profileRoutes.post("/create", async (req, res) => {
 
   const { body, statusCode } = await createProfileController.handle({
     body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+profileRoutes.patch("/update/", async (req, res) => {
+  const updateProfileRepository = new UpdateProfileRepository();
+
+  const updateProfileController = new UpdateProfileController(
+    updateProfileRepository
+  );
+
+  const { body, statusCode } = await updateProfileController.handle({
+    body: req.body
   });
 
   res.status(statusCode).send(body);
