@@ -36,6 +36,7 @@ model Posts {
   title      String    @db.VarChar(50)
   content    String    @db.VarChar(250)
   attachment String?
+  published  Boolean
   user       Users     @relation(fields: [id_user], references: [id])
   id_user    String    @unique
   coments    Coments[]
