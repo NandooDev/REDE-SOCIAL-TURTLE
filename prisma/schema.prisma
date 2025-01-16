@@ -63,11 +63,12 @@ model Profile {
 }
 
 model Likes {
-  id      String @id @default(uuid())
-  post    Posts  @relation(fields: [id_post], references: [id])
-  id_post String @unique
-  user    Users  @relation(fields: [id_user], references: [id])
-  id_user String @unique
+  id         String   @id @default(uuid())
+  post       Posts    @relation(fields: [id_post], references: [id])
+  id_post    String   @unique
+  user       Users    @relation(fields: [id_user], references: [id])
+  id_user    String   @unique
+  created_at DateTime @default(now())
 }
 
 model Companys {

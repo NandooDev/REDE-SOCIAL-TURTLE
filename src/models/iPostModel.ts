@@ -1,4 +1,4 @@
-import { IComentModel } from "./iCommentModel";
+import { ICommentModel } from "./iCommentModel";
 
 export interface IPostModel {
   id?: string;
@@ -8,5 +8,5 @@ export interface IPostModel {
   published: boolean;
   id_user: string;
   created_at?: Date;
-  coments?: IComentModel[];
+  coments?: ICommentModel[];
 }
