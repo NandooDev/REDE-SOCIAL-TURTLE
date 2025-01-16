@@ -6,5 +6,5 @@ export interface IGetCommentsRepository {
   }
   
   export interface IGetCommentsController {
-    handle(): Promise<IHttpResponse<ICommentModel>>;
+    handle(): Promise<IHttpResponse<ICommentModel[]>>;
   }
