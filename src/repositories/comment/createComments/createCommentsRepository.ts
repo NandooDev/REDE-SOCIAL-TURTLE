@@ -1,5 +1,8 @@
 import { PrismaClient } from "../../../../node_modules/.prisma/client/index";
-import { ICommentParams, ICreateCommentsRepository } from "../../../controllers/comment/createComments/protocols";
+import {
+  ICommentParams,
+  ICreateCommentsRepository,
+} from "../../../controllers/comment/createComments/protocols";
 import { ICommentModel } from "../../../models/iCommentModel";
 
 const prisma = new PrismaClient();

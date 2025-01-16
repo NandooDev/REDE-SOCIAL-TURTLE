@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { GetCommentsRepository } from "../../repositories/comment/getComments/getCommentsRepository";
 import { GetCommentsController } from "../../controllers/comment/getComments/getCommentsController";
-import { CreateCommentsRepository } from "../../repositories/comment/createComments/createCommentsRepository";
 import { CreateCommentsController } from "../../controllers/comment/createComments/createCommentsController";
+import { CreateCommentsRepository } from "../../repositories/comment/createComments/createCommentsRepository";
+import { DeleteCommentsRepository } from "../../repositories/comment/deleteComments/deleteCommentsRepository";
+import { DeleteCommentsController } from "../../controllers/comment/deleteComments/deleteCommentsController";
 
 const commentRoutes = Router();
 
@@ -27,6 +29,20 @@ commentRoutes.post("/create", async (req, res) => {
 
   const { body, statusCode } = await createCommentsController.handle({
     body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+commentRoutes.delete("/delete/:id", async (req, res) => {
+  const deleteCommentsRepository = new DeleteCommentsRepository();
+
+  const deleteCommentsController = new DeleteCommentsController(
+    deleteCommentsRepository
+  );
+
+  const { body, statusCode } = await deleteCommentsController.handle({
+    params: req.params,
   });
 
   res.status(statusCode).send(body);
