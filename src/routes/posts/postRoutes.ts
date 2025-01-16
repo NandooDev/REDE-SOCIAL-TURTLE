@@ -30,4 +30,17 @@ postRoutes.post("/create", async (req, res) => {
   res.status(statusCode).send(body);
 });
 
+postRoutes.patch('/update/:id', async (req, res) => {
+  const updatePostsPublishedRepository = new UpdatePostsPublishedRepository()
+
+  const updatePostsPublishedController = new UpdatePostsPublishedController(updatePostsPublishedRepository)
+
+  const { body, statusCode } = await updatePostsPublishedController.handle({
+    params: req.params,
+    body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+})
+
 export { postRoutes };
