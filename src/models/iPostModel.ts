@@ -1,4 +1,4 @@
-import { IComentModel } from "./iComentModel";
+import { IComentModel } from "./iCommentModel";
 
 export interface IPostModel {
   id?: string;

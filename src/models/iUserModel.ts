@@ -1,5 +1,5 @@
 import { ERole } from "./eRole";
-import { IComentModel } from "./iComentModel";
+import { IComentModel } from "./iCommentModel";
 import { IPostModel } from "./iPostModel";
 
 export interface IUserModel {

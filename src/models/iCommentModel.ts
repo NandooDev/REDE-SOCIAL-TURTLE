@@ -1,4 +1,4 @@
-export interface IComentModel {
+export interface ICommentModel {
   id?: string;
   content: string;
   id_post?: string;
