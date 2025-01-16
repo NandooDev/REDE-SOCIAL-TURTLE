@@ -6,7 +6,7 @@ export interface IPostModel {
   content: string;
   attachment?: string;
   published: boolean;
-  id_user?: string;
+  id_user: string;
   created_at?: Date;
   coments?: IComentModel[];
 }
