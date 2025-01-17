@@ -22,6 +22,7 @@ model Users {
   position      String
   role          String    @default("user")
   company_code  String
+  company       Companys  @relation(fields: [company_code], references: [company_code])
   profile_photo String?
   created_at    DateTime  @default(now())
   updated_at    DateTime  @default(now())
@@ -77,7 +78,8 @@ model Companys {
   cnpj         String   @unique @db.VarChar(18)
   adress       String   @db.VarChar(100)
   sector       String
-  company_code String
+  company_code String   @unique
+  users        Users[]
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now())
 }

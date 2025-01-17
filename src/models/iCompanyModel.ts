@@ -7,6 +7,6 @@ export interface ICompanyModel {
   adress: string;
   sector: ECompanySector;
   company_code: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at?: Date;
+  updated_at?: Date;
 }
