@@ -13,6 +13,23 @@ export class GetUsersByUsernameRepository
         where: {
           username: username,
         },
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          profile_photo: true,
+          followers: true,
+          bio: true,
+          posts: {
+            select: {
+              id: true,
+              title: true,
+              content: true,
+              attachment: true,
+              published: true,
+            },
+          },
+        },
       });
 
       return user;

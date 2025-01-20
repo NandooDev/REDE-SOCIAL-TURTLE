@@ -1,4 +1,5 @@
 import { ICommentModel } from "./iCommentModel";
+import { ILikeModel } from "./iLikeModel";
 import { IPostModel } from "./iPostModel";
 
 export interface IUserModel {
@@ -14,4 +15,5 @@ export interface IUserModel {
   updated_at?: Date;
   posts?: IPostModel[];
   coments?: ICommentModel[];
+  likes?: ILikeModel[];
 }

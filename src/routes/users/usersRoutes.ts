@@ -10,7 +10,7 @@ import { DeleteUsersController } from "../../controllers/user/deleteUsers/delete
 import { CryptographyPassword } from "../../cryptography/cryptographyPassword";
 import { LoginUsersRepository } from "../../repositories/user/loginUsers/loginUsersRepository";
 import { LoginUsersController } from "../../controllers/user/loginUsers/loginUsersController";
-import { GetUsersByUsernameRepository } from "../../repositories/user/getUsersByUsername/getProfilesByUsernameRepository";
+import { GetUsersByUsernameRepository } from "../../repositories/user/getUsersByUsername/getUsersByUsernameRepository";
 import { GetUsersByUsernameController } from "../../controllers/user/getUsersByUsername/getUsersByUsernameController";
 
 const userRoutes: Router = Router();

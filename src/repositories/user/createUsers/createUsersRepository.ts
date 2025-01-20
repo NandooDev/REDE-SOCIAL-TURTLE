@@ -12,6 +12,12 @@ export class CreateUsersRepository implements ICreateUsersRepository {
     try {
       const user = await prisma.users.create({
         data: params,
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          email: true,
+        },
       });
 
       if (!user) {
