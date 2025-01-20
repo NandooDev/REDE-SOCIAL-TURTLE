@@ -23,9 +23,6 @@ export class CreateUsersController implements ICreateUsersController {
         "username",
         "email",
         "password",
-        "position",
-        "role",
-        "company_code",
       ];
 
       for (const field of requiredFields) {

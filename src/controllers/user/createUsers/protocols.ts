@@ -1,4 +1,3 @@
-import { ERole } from "../../../models/eRole";
 import { IUserModel } from "../../../models/iUserModel";
 import { IHttpRequest, IHttpResponse } from "../../protocols";
 
@@ -13,9 +12,6 @@ export interface ICreateUsersParams {
   name: string;
   email: string;
   password: string;
-  position: string;
-  role: ERole;
-  company_code: string;
   profile_photo?: string;
 }
 

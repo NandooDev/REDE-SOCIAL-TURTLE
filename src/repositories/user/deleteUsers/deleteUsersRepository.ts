@@ -17,13 +17,6 @@ export class DeleteUsersRepository implements IDeleteUsersRepository {
         throw new Error("User not exists");
       }
 
-      // Deletar o profile associado
-      await prisma.profile.deleteMany({
-        where: {
-          id_user: id,
-        },
-      });
-
       // Deletar o usuário
       await prisma.users.delete({
         where: {
