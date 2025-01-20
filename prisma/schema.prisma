@@ -19,16 +19,13 @@ model Users {
   username      String    @unique @db.VarChar(30)
   email         String    @unique
   password      String    @db.VarChar(250)
-  position      String
-  role          String    @default("user")
-  company_code  String
-  company       Companys  @relation(fields: [company_code], references: [company_code])
   profile_photo String?
+  followers     Int?
+  bio           String?    @db.VarChar(100)
   created_at    DateTime  @default(now())
   updated_at    DateTime  @default(now())
   posts         Posts[]
   coments       Coments[]
-  profile       Profile?
   likes         Likes[]
 }
 
@@ -54,15 +51,6 @@ model Coments {
   id_user String @unique
 }
 
-model Profile {
-  id         String   @id @default(uuid())
-  bio        String   @db.VarChar(100)
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  user       Users    @relation(fields: [id_user], references: [id])
-  id_user    String   @unique
-}
-
 model Likes {
   id         String   @id @default(uuid())
   post       Posts    @relation(fields: [id_post], references: [id])
@@ -70,16 +58,4 @@ model Likes {
   user       Users    @relation(fields: [id_user], references: [id])
   id_user    String   @unique
   created_at DateTime @default(now())
-}
-
-model Companys {
-  id           String   @id @default(uuid())
-  name         String   @db.VarChar(50)
-  cnpj         String   @unique @db.VarChar(18)
-  adress       String   @db.VarChar(100)
-  sector       String
-  company_code String   @unique
-  users        Users[]
-  created_at   DateTime @default(now())
-  updated_at   DateTime @default(now())
 }
