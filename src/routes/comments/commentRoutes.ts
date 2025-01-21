@@ -5,6 +5,8 @@ import { CreateCommentsController } from "../../controllers/comment/createCommen
 import { CreateCommentsRepository } from "../../repositories/comment/createComments/createCommentsRepository";
 import { DeleteCommentsRepository } from "../../repositories/comment/deleteComments/deleteCommentsRepository";
 import { DeleteCommentsController } from "../../controllers/comment/deleteComments/deleteCommentsController";
+import { MyCommentsRepository } from "../../repositories/comment/myComments/myCommentsRepository";
+import { MyCommentsController } from "../../controllers/comment/myComments/myCommentsController";
 
 const commentRoutes = Router();
 
@@ -47,5 +49,18 @@ commentRoutes.delete("/delete/:id", async (req, res) => {
 
   res.status(statusCode).send(body);
 });
+
+commentRoutes.get("/myComments", async (req, res) => {
+  const myCommentsRepository = new MyCommentsRepository();
+
+  const myCommentsController = new MyCommentsController(myCommentsRepository);
+
+  const { body, statusCode } = await myCommentsController.handle({
+    body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+});
+
 
 export { commentRoutes };
