@@ -5,6 +5,8 @@ import { CreateLikesRepository } from "../../repositories/like/createLikes/creat
 import { CreateLikesController } from "../../controllers/like/createLikes/createLikesController";
 import { DeleteLikesRepository } from "../../repositories/like/deleteLikes/deleteLikesRepository";
 import { DeleteLikesController } from "../../controllers/like/deleteLikes/deleteLikesController";
+import { MyLikesRepository } from "../../repositories/like/myLikes/myLikesRepository";
+import { MyLikesController } from "../../controllers/like/myLikes/myLikesController";
 
 const likeRoutes = Router();
 
@@ -34,13 +36,25 @@ likeRoutes.post("/create/posts/:id_post/:id_user", async (req, res) => {
 
 likeRoutes.delete("/delete/:id", async (req, res) => {
   const deleteLikesRepository = new DeleteLikesRepository();
-  
+
   const deleteLikesController = new DeleteLikesController(
     deleteLikesRepository
   );
 
   const { body, statusCode } = await deleteLikesController.handle({
     params: req.params,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+likeRoutes.get("/myLikes", async (req, res) => {
+  const myLikesRepository = new MyLikesRepository();
+
+  const myLikesController = new MyLikesController(myLikesRepository);
+
+  const { body, statusCode } = await myLikesController.handle({
+    body: req.body,
   });
 
   res.status(statusCode).send(body);
