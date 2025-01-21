@@ -7,6 +7,8 @@ import { UpdatePostsPublishedRepository } from "../../repositories/post/updatePo
 import { UpdatePostsPublishedController } from "../../controllers/post/updatePostsPublished/updatePostsPublishedController";
 import { DeletePostsRepository } from "../../repositories/post/deletePosts/deletePostsRepository";
 import { DeletePostsController } from "../../controllers/post/deletePost/deletePostsController";
+import { MyPostsRepository } from "../../repositories/post/myPosts/myPostsRepository";
+import { MyPostsController } from "../../controllers/post/myPosts/myPostsController";
 
 const postRoutes = Router();
 
@@ -48,12 +50,26 @@ postRoutes.patch("/update/:id", async (req, res) => {
 });
 
 postRoutes.delete("/delete/:id", async (req, res) => {
-  const deletePostsRepository = new DeletePostsRepository()
-   
-  const deletePostsController = new DeletePostsController(deletePostsRepository)
+  const deletePostsRepository = new DeletePostsRepository();
+
+  const deletePostsController = new DeletePostsController(
+    deletePostsRepository
+  );
 
   const { body, statusCode } = await deletePostsController.handle({
-    params: req.params
+    params: req.params,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+postRoutes.get("/myPosts", async (req, res) => {
+  const myPostsRepository = new MyPostsRepository();
+
+  const myPostsController = new MyPostsController(myPostsRepository);
+
+  const { body, statusCode } = await myPostsController.handle({
+    body: req.body,
   });
 
   res.status(statusCode).send(body);
