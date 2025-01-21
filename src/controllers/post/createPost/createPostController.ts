@@ -13,12 +13,7 @@ export class CreatePostController implements ICreatePostController {
   ): Promise<IHttpResponse<IPostModel>> {
     try {
       // verificar campos obrigatórios
-      const requiredFields = [
-        "title",
-        "content",
-        "published",
-        "id_user",
-      ];
+      const requiredFields = ["title", "content", "published", "id_user"];
 
       for (const field of requiredFields) {
         if (!httpRequest?.body?.[field as keyof IPostParams]) {
@@ -29,7 +24,9 @@ export class CreatePostController implements ICreatePostController {
         }
       }
 
-      const post = await this.createPostRepository.createPost(httpRequest.body!);
+      const post = await this.createPostRepository.createPost(
+        httpRequest.body!
+      );
 
       return {
         statusCode: 201,

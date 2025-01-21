@@ -14,5 +14,7 @@ export interface ICreatePostRepository {
 }
 
 export interface ICreatePostController {
-  handle(httpRequest: IHttpRequest<IPostParams>): Promise<IHttpResponse<IPostModel>>;
+  handle(
+    httpRequest: IHttpRequest<IPostParams>
+  ): Promise<IHttpResponse<IPostModel>>;
 }
