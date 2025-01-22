@@ -7,6 +7,7 @@ import {
   ICreateUsersRepository,
   ICryptographyPassword,
 } from "./protocols";
+import { sendMail } from "../../../services/sendMail";
 
 export class CreateUsersController implements ICreateUsersController {
   constructor(
@@ -54,6 +55,8 @@ export class CreateUsersController implements ICreateUsersController {
         ...userData,
         password: passwordCryptography,
       });
+
+      sendMail(user.email, user.username)
 
       return {
         statusCode: 201,
