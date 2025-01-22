@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 import { config } from "dotenv";
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 
 config();
 
@@ -14,13 +16,15 @@ const transportGmail = nodemailer.createTransport({
 });
 
 export function sendMail(toEmail: string, username: string) {
+  const filePath = resolve(__dirname, '../html/sendEmailTemplate.html');
+
+  const htmlContent = readFileSync(filePath, 'utf-8');
+
   transportGmail.sendMail({
     from: "Turtle <turtleredesocial@gmail.com>",
     to: `${toEmail}`,
     subject: `Bem Vindo à Turtle`,
-    html: `<h1>Olá ${username}, seja muito Bem Vindo à nossa plataforma Turtle.
-        Esperamos que você aproveite de forma descontraida e divertida nossa rede social.
-        Qualquer dúvida que tiver entre em contato pelo nosso email turtleredesocial@gmail.com</h1>`,
+    html: htmlContent,
     text: `Olá ${username}, seja muito Bem Vindo à nossa plataforma Turtle.
         Esperamos que você aproveite de forma descontraida e divertida nossa rede social.
         Qualquer dúvida que tiver entre em contato pelo nosso email turtleredesocial@gmail.com`,

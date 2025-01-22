@@ -29,6 +29,7 @@
     "@types/validator": "^13.12.2",
     "bcrypt": "^5.1.1",
     "express": "^4.21.2",
+    "fs": "^0.0.1-security",
     "nodemailer": "^6.9.16",
     "prisma": "^6.1.0",
     "validator": "^13.12.0"

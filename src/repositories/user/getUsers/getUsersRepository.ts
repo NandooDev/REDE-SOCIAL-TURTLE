@@ -12,6 +12,7 @@ export class GetUsersRepository implements IGetUsersRepository {
           id: true,
           name: true,
           username: true,
+          email: true,
           profile_photo: true,
           followers: true,
           bio: true,
