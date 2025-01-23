@@ -21,7 +21,8 @@ model Users {
   password      String    @db.VarChar(250)
   profile_photo String?
   followers     Int?
-  bio           String?    @db.VarChar(100)
+  bio           String?   @db.VarChar(100)
+  role          String
   created_at    DateTime  @default(now())
   updated_at    DateTime  @default(now())
   posts         Posts[]
