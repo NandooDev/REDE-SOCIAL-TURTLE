@@ -1,16 +1,22 @@
 import validator from "validator";
 import { IHttpRequest, IHttpResponse } from "../../protocols";
 import {
+  IKeysJwt,
   ILoginUsersController,
   ILoginUsersRepository,
   IUserParamsLogin,
 } from "./protocols";
+import {
+  generateAcessToken,
+  generateRefreshToken,
+  IPayloadJWT,
+} from "../../../jwt/utils/jwtUtils";
 
 export class LoginUsersController implements ILoginUsersController {
   constructor(private readonly loginUsersRepository: ILoginUsersRepository) {}
   async handle(
     httpRequest: IHttpRequest<IUserParamsLogin>
-  ): Promise<IHttpResponse<boolean>> {
+  ): Promise<IHttpResponse<IKeysJwt>> {
     try {
       //verificar se o email é valido
       const emailIsValid = validator.isEmail(httpRequest.body!.email);
@@ -26,16 +32,25 @@ export class LoginUsersController implements ILoginUsersController {
         httpRequest.body!
       );
 
-      if (!userLogin) {
+      if (userLogin.login == false) {
         return {
           statusCode: 401,
           body: "Email ou senha inválidos",
         };
       }
 
+      const payload: IPayloadJWT = {
+        id: userLogin.id!,
+        username: userLogin.username!,
+        role: userLogin.role!,
+      };
+
+      const acessToken = generateAcessToken(payload);
+      const refreshToken = generateRefreshToken(payload.id);
+
       return {
         statusCode: 201,
-        body: true,
+        body: { acessToken: acessToken, refreshToken: refreshToken },
       };
     } catch (error) {
       console.log(error);

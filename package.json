@@ -30,6 +30,7 @@
     "bcrypt": "^5.1.1",
     "express": "^4.21.2",
     "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.16",
     "prisma": "^6.1.0",
     "validator": "^13.12.0"
