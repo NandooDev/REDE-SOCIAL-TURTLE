@@ -9,8 +9,11 @@ import { DeletePostsRepository } from "../../repositories/post/deletePosts/delet
 import { DeletePostsController } from "../../controllers/post/deletePost/deletePostsController";
 import { MyPostsRepository } from "../../repositories/post/myPosts/myPostsRepository";
 import { MyPostsController } from "../../controllers/post/myPosts/myPostsController";
+import { AuthenticateToken } from "../../auth/authenticateToken/authenticateToken";
 
 const postRoutes = Router();
+
+const authenticateToken = new AuthenticateToken();
 
 postRoutes.get("/", async (req, res) => {
   const getPostsRepository = new GetPostsRepository();
@@ -22,46 +25,58 @@ postRoutes.get("/", async (req, res) => {
   res.status(statusCode).send(body);
 });
 
-postRoutes.post("/create", async (req, res) => {
-  const createPostRepository = new CreatePostRepository();
+postRoutes.post(
+  "/create",
+  authenticateToken.authenticateToken,
+  async (req, res) => {
+    const createPostRepository = new CreatePostRepository();
 
-  const createPostController = new CreatePostController(createPostRepository);
+    const createPostController = new CreatePostController(createPostRepository);
 
-  const { body, statusCode } = await createPostController.handle({
-    body: req.body,
-  });
+    const { body, statusCode } = await createPostController.handle({
+      body: req.body,
+    });
 
-  res.status(statusCode).send(body);
-});
+    res.status(statusCode).send(body);
+  }
+);
 
-postRoutes.patch("/update/:id", async (req, res) => {
-  const updatePostsPublishedRepository = new UpdatePostsPublishedRepository();
+postRoutes.patch(
+  "/update/:id",
+  authenticateToken.authenticateToken,
+  async (req, res) => {
+    const updatePostsPublishedRepository = new UpdatePostsPublishedRepository();
 
-  const updatePostsPublishedController = new UpdatePostsPublishedController(
-    updatePostsPublishedRepository
-  );
+    const updatePostsPublishedController = new UpdatePostsPublishedController(
+      updatePostsPublishedRepository
+    );
 
-  const { body, statusCode } = await updatePostsPublishedController.handle({
-    params: req.params,
-    body: req.body,
-  });
+    const { body, statusCode } = await updatePostsPublishedController.handle({
+      params: req.params,
+      body: req.body,
+    });
 
-  res.status(statusCode).send(body);
-});
+    res.status(statusCode).send(body);
+  }
+);
 
-postRoutes.delete("/delete/:id", async (req, res) => {
-  const deletePostsRepository = new DeletePostsRepository();
+postRoutes.delete(
+  "/delete/:id",
+  authenticateToken.authenticateToken,
+  async (req, res) => {
+    const deletePostsRepository = new DeletePostsRepository();
 
-  const deletePostsController = new DeletePostsController(
-    deletePostsRepository
-  );
+    const deletePostsController = new DeletePostsController(
+      deletePostsRepository
+    );
 
-  const { body, statusCode } = await deletePostsController.handle({
-    params: req.params,
-  });
+    const { body, statusCode } = await deletePostsController.handle({
+      params: req.params,
+    });
 
-  res.status(statusCode).send(body);
-});
+    res.status(statusCode).send(body);
+  }
+);
 
 postRoutes.get("/myPosts", async (req, res) => {
   const myPostsRepository = new MyPostsRepository();

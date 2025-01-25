@@ -7,8 +7,11 @@ import { DeleteCommentsRepository } from "../../repositories/comment/deleteComme
 import { DeleteCommentsController } from "../../controllers/comment/deleteComments/deleteCommentsController";
 import { MyCommentsRepository } from "../../repositories/comment/myComments/myCommentsRepository";
 import { MyCommentsController } from "../../controllers/comment/myComments/myCommentsController";
+import { AuthenticateToken } from "../../auth/authenticateToken/authenticateToken";
 
 const commentRoutes = Router();
+
+const authenticateToken = new AuthenticateToken();
 
 commentRoutes.get("/", async (req, res) => {
   const getCommentsRepository = new GetCommentsRepository();
@@ -22,45 +25,56 @@ commentRoutes.get("/", async (req, res) => {
   res.status(statusCode).send(body);
 });
 
-commentRoutes.post("/create", async (req, res) => {
-  const createCommentsRepository = new CreateCommentsRepository();
+commentRoutes.post(
+  "/create",
+  authenticateToken.authenticateToken,
+  async (req, res) => {
+    const createCommentsRepository = new CreateCommentsRepository();
 
-  const createCommentsController = new CreateCommentsController(
-    createCommentsRepository
-  );
+    const createCommentsController = new CreateCommentsController(
+      createCommentsRepository
+    );
 
-  const { body, statusCode } = await createCommentsController.handle({
-    body: req.body,
-  });
+    const { body, statusCode } = await createCommentsController.handle({
+      body: req.body,
+    });
 
-  res.status(statusCode).send(body);
-});
+    res.status(statusCode).send(body);
+  }
+);
 
-commentRoutes.delete("/delete/:id", async (req, res) => {
-  const deleteCommentsRepository = new DeleteCommentsRepository();
+commentRoutes.delete(
+  "/delete/:id",
+  authenticateToken.authenticateToken,
+  async (req, res) => {
+    const deleteCommentsRepository = new DeleteCommentsRepository();
 
-  const deleteCommentsController = new DeleteCommentsController(
-    deleteCommentsRepository
-  );
+    const deleteCommentsController = new DeleteCommentsController(
+      deleteCommentsRepository
+    );
 
-  const { body, statusCode } = await deleteCommentsController.handle({
-    params: req.params,
-  });
+    const { body, statusCode } = await deleteCommentsController.handle({
+      params: req.params,
+    });
 
-  res.status(statusCode).send(body);
-});
+    res.status(statusCode).send(body);
+  }
+);
 
-commentRoutes.get("/myComments", async (req, res) => {
-  const myCommentsRepository = new MyCommentsRepository();
+commentRoutes.get(
+  "/myComments",
+  authenticateToken.authenticateToken,
+  async (req, res) => {
+    const myCommentsRepository = new MyCommentsRepository();
 
-  const myCommentsController = new MyCommentsController(myCommentsRepository);
+    const myCommentsController = new MyCommentsController(myCommentsRepository);
 
-  const { body, statusCode } = await myCommentsController.handle({
-    body: req.body,
-  });
+    const { body, statusCode } = await myCommentsController.handle({
+      body: req.body,
+    });
 
-  res.status(statusCode).send(body);
-});
-
+    res.status(statusCode).send(body);
+  }
+);
 
 export { commentRoutes };

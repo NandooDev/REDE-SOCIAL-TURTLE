@@ -12,8 +12,11 @@ import { LoginUsersRepository } from "../../repositories/user/loginUsers/loginUs
 import { LoginUsersController } from "../../controllers/user/loginUsers/loginUsersController";
 import { GetUsersByUsernameRepository } from "../../repositories/user/getUsersByUsername/getUsersByUsernameRepository";
 import { GetUsersByUsernameController } from "../../controllers/user/getUsersByUsername/getUsersByUsernameController";
+import { AuthenticateToken } from "../../auth/authenticateToken/authenticateToken";
 
 const userRoutes: Router = Router();
+
+const authenticateToken = new AuthenticateToken();
 
 userRoutes.get("/", async (req, res) => {
   const getUsersRepository = new GetUsersRepository();
@@ -41,34 +44,42 @@ userRoutes.post("/create", async (req, res) => {
   res.status(statusCode).send(body);
 });
 
-userRoutes.patch("/update/:id", async (req, res) => {
-  const updateUsersRepository = new UpdateUsersRepository();
+userRoutes.patch(
+  "/update/:id",
+  authenticateToken.authenticateToken,
+  async (req, res) => {
+    const updateUsersRepository = new UpdateUsersRepository();
 
-  const updateUsersController = new UpdateUsersController(
-    updateUsersRepository
-  );
+    const updateUsersController = new UpdateUsersController(
+      updateUsersRepository
+    );
 
-  const { body, statusCode } = await updateUsersController.handle({
-    body: req.body,
-    params: req.params,
-  });
+    const { body, statusCode } = await updateUsersController.handle({
+      body: req.body,
+      params: req.params,
+    });
 
-  res.status(statusCode).send(body);
-});
+    res.status(statusCode).send(body);
+  }
+);
 
-userRoutes.delete("/delete/:id", async (req, res) => {
-  const deleteUsersRepository = new DeleteUsersRepository();
+userRoutes.delete(
+  "/delete/:id",
+  authenticateToken.authenticateToken,
+  async (req, res) => {
+    const deleteUsersRepository = new DeleteUsersRepository();
 
-  const deleteUsersController = new DeleteUsersController(
-    deleteUsersRepository
-  );
+    const deleteUsersController = new DeleteUsersController(
+      deleteUsersRepository
+    );
 
-  const { body, statusCode } = await deleteUsersController.handle({
-    params: req.params,
-  });
+    const { body, statusCode } = await deleteUsersController.handle({
+      params: req.params,
+    });
 
-  res.status(statusCode).send(body);
-});
+    res.status(statusCode).send(body);
+  }
+);
 
 userRoutes.post("/login", async (req, res) => {
   const loginUsersRepository = new LoginUsersRepository();

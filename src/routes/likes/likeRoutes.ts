@@ -7,8 +7,11 @@ import { DeleteLikesRepository } from "../../repositories/like/deleteLikes/delet
 import { DeleteLikesController } from "../../controllers/like/deleteLikes/deleteLikesController";
 import { MyLikesRepository } from "../../repositories/like/myLikes/myLikesRepository";
 import { MyLikesController } from "../../controllers/like/myLikes/myLikesController";
+import { AuthenticateToken } from "../../auth/authenticateToken/authenticateToken";
 
 const likeRoutes = Router();
+
+const authenticateToken = new AuthenticateToken();
 
 likeRoutes.get("/", async (req, res) => {
   const getLikesRepository = new GetLikesRepository();
@@ -20,44 +23,56 @@ likeRoutes.get("/", async (req, res) => {
   res.status(statusCode).send(body);
 });
 
-likeRoutes.post("/create/posts/:id_post/:id_user", async (req, res) => {
-  const createLikesRepository = new CreateLikesRepository();
+likeRoutes.post(
+  "/create/posts/:id_post/:id_user",
+  authenticateToken.authenticateToken,
+  async (req, res) => {
+    const createLikesRepository = new CreateLikesRepository();
 
-  const createLikesController = new CreateLikesController(
-    createLikesRepository
-  );
+    const createLikesController = new CreateLikesController(
+      createLikesRepository
+    );
 
-  const { body, statusCode } = await createLikesController.handle({
-    params: req.params,
-  });
+    const { body, statusCode } = await createLikesController.handle({
+      params: req.params,
+    });
 
-  res.status(statusCode).send(body);
-});
+    res.status(statusCode).send(body);
+  }
+);
 
-likeRoutes.delete("/delete/:id", async (req, res) => {
-  const deleteLikesRepository = new DeleteLikesRepository();
+likeRoutes.delete(
+  "/delete/:id",
+  authenticateToken.authenticateToken,
+  async (req, res) => {
+    const deleteLikesRepository = new DeleteLikesRepository();
 
-  const deleteLikesController = new DeleteLikesController(
-    deleteLikesRepository
-  );
+    const deleteLikesController = new DeleteLikesController(
+      deleteLikesRepository
+    );
 
-  const { body, statusCode } = await deleteLikesController.handle({
-    params: req.params,
-  });
+    const { body, statusCode } = await deleteLikesController.handle({
+      params: req.params,
+    });
 
-  res.status(statusCode).send(body);
-});
+    res.status(statusCode).send(body);
+  }
+);
 
-likeRoutes.get("/myLikes", async (req, res) => {
-  const myLikesRepository = new MyLikesRepository();
+likeRoutes.get(
+  "/myLikes",
+  authenticateToken.authenticateToken,
+  async (req, res) => {
+    const myLikesRepository = new MyLikesRepository();
 
-  const myLikesController = new MyLikesController(myLikesRepository);
+    const myLikesController = new MyLikesController(myLikesRepository);
 
-  const { body, statusCode } = await myLikesController.handle({
-    body: req.body,
-  });
+    const { body, statusCode } = await myLikesController.handle({
+      body: req.body,
+    });
 
-  res.status(statusCode).send(body);
-});
+    res.status(statusCode).send(body);
+  }
+);
 
 export { likeRoutes };
