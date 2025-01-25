@@ -70,7 +70,7 @@ userRoutes.delete("/delete/:id", async (req, res) => {
   res.status(statusCode).send(body);
 });
 
-userRoutes.get("/login", async (req, res) => {
+userRoutes.post("/login", async (req, res) => {
   const loginUsersRepository = new LoginUsersRepository();
 
   const loginUsersController = new LoginUsersController(loginUsersRepository);

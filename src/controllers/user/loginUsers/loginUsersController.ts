@@ -10,7 +10,7 @@ import {
   generateAcessToken,
   generateRefreshToken,
   IPayloadJWT,
-} from "../../../jwt/utils/jwtUtils";
+} from "../../../auth/utils/jwtUtils";
 
 export class LoginUsersController implements ILoginUsersController {
   constructor(private readonly loginUsersRepository: ILoginUsersRepository) {}

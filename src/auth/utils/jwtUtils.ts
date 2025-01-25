@@ -15,7 +15,7 @@ export interface IPayloadJWT {
 }
 
 export function generateAcessToken(user: IPayloadJWT): string {
-  return jwt.sign(user, ACESS_TOKEN_SECRET, { expiresIn: "15m" });
+  return jwt.sign(user, ACESS_TOKEN_SECRET, { expiresIn: "1h" });
 }
 
 export function generateRefreshToken(userId: string): string {
