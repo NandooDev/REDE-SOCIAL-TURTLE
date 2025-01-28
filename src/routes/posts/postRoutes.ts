@@ -10,8 +10,15 @@ import { DeletePostsController } from "../../controllers/post/deletePost/deleteP
 import { MyPostsRepository } from "../../repositories/post/myPosts/myPostsRepository";
 import { MyPostsController } from "../../controllers/post/myPosts/myPostsController";
 import { AuthenticateToken } from "../../auth/authenticateToken/authenticateToken";
+import bodyParser from "body-parser";
+import multer from "multer";
+import { storage } from "../../services/multerConfig";
 
 const postRoutes = Router();
+
+postRoutes.use(bodyParser.json());
+
+const upload = multer({ storage: storage });
 
 const authenticateToken = new AuthenticateToken();
 
@@ -28,10 +35,19 @@ postRoutes.get("/", async (req, res) => {
 postRoutes.post(
   "/create",
   authenticateToken.authenticateToken,
+  upload.single("file"),
   async (req, res) => {
     const createPostRepository = new CreatePostRepository();
 
     const createPostController = new CreatePostController(createPostRepository);
+
+    req.body.attachment = req.file.filename;
+
+    if (req.body.published === "true") {
+      req.body.published = true;
+    } else if (req.body.published === "false") {
+      req.body.published = false;
+    }
 
     const { body, statusCode } = await createPostController.handle({
       body: req.body,

@@ -8,7 +8,6 @@ config();
 export class AuthenticateToken {
   authenticateToken(req: Request, res: Response, next: NextFunction): void {
     const token = req.header("Authorization")?.split(" ")[1];
-    console.log(token)
 
     if (!token) return res.status(401).json({ error: "Token is Required" });
 

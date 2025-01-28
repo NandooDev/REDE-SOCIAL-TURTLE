@@ -1,4 +1,5 @@
 import { Router } from "express";
+import multer from "multer";
 import { GetUsersController } from "../../controllers/user/getUsers/getUsersController";
 import { GetUsersRepository } from "../../repositories/user/getUsers/getUsersRepository";
 import { CreateUsersRepository } from "../../repositories/user/createUsers/createUsersRepository";
@@ -13,8 +14,14 @@ import { LoginUsersController } from "../../controllers/user/loginUsers/loginUse
 import { GetUsersByUsernameRepository } from "../../repositories/user/getUsersByUsername/getUsersByUsernameRepository";
 import { GetUsersByUsernameController } from "../../controllers/user/getUsersByUsername/getUsersByUsernameController";
 import { AuthenticateToken } from "../../auth/authenticateToken/authenticateToken";
+import bodyParser from "body-parser";
+import { storage } from "../../services/multerConfig";
 
 const userRoutes: Router = Router();
+
+userRoutes.use(bodyParser.json());
+
+const upload = multer({ storage: storage });
 
 const authenticateToken = new AuthenticateToken();
 
@@ -28,7 +35,7 @@ userRoutes.get("/", async (req, res) => {
   res.status(statusCode).send(body);
 });
 
-userRoutes.post("/create", async (req, res) => {
+userRoutes.post("/create", upload.single("file"), async (req, res) => {
   const createUsersRepository = new CreateUsersRepository();
   const cryptographyPassword = new CryptographyPassword();
 
@@ -36,6 +43,8 @@ userRoutes.post("/create", async (req, res) => {
     createUsersRepository,
     cryptographyPassword
   );
+
+  req.body.profile_photo = req.file.filename;
 
   const { body, statusCode } = await createUsersController.handle({
     body: req.body,
@@ -47,12 +56,15 @@ userRoutes.post("/create", async (req, res) => {
 userRoutes.patch(
   "/update/:id",
   authenticateToken.authenticateToken,
+  upload.single("file"),
   async (req, res) => {
     const updateUsersRepository = new UpdateUsersRepository();
 
     const updateUsersController = new UpdateUsersController(
       updateUsersRepository
     );
+
+    req.body.profile_photo = req.file.filename;
 
     const { body, statusCode } = await updateUsersController.handle({
       body: req.body,
