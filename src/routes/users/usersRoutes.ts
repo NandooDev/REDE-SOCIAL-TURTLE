@@ -44,7 +44,7 @@ userRoutes.post("/create", upload.single("file"), async (req, res) => {
     cryptographyPassword
   );
 
-  req.body.profile_photo = req.file.filename;
+  req.body.profile_photo = `http://localhost:3000/files/${req.file.filename}`;
 
   const { body, statusCode } = await createUsersController.handle({
     body: req.body,
@@ -64,7 +64,7 @@ userRoutes.patch(
       updateUsersRepository
     );
 
-    req.body.profile_photo = req.file.filename;
+    req.body.profile_photo = `http://localhost:3000/files/${req.file.filename}`;
 
     const { body, statusCode } = await updateUsersController.handle({
       body: req.body,
