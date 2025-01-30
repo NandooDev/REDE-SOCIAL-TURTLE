@@ -7,17 +7,16 @@ export class AddFollowerController implements IAddFollowerController {
   async handle(
     httpRequest: IHttpRequest<any>
   ): Promise<IHttpResponse<IUserModel>> {
-    const username = httpRequest.body.username;
-
-    const userAddFollower =
-      await this.addFollowerRepository.addFollower(username);
-
-    return {
-      statusCode: 200,
-      body: userAddFollower,
-    };
-
     try {
+      const username = httpRequest.body.username;
+
+      const userAddFollower =
+        await this.addFollowerRepository.addFollower(username);
+
+      return {
+        statusCode: 200,
+        body: userAddFollower,
+      };
     } catch (error) {
       return {
         statusCode: 500,
