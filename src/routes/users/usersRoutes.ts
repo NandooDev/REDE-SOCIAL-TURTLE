@@ -18,6 +18,8 @@ import bodyParser from "body-parser";
 import { storage } from "../../services/multerConfig";
 import { AddFollowerRepository } from "../../repositories/user/addFollower/addFollowerRepository";
 import { AddFollowerController } from "../../controllers/user/addFollower/addFollowerController";
+import { DeleteFollowerRepository } from "../../repositories/user/deleteFollower/deleteFollowerRepository";
+import { DeleteFollowerController } from "../../controllers/user/deleteFollower/deleteFollowerController";
 
 const userRoutes: Router = Router();
 
@@ -131,6 +133,20 @@ userRoutes.patch("/addFollower", async (req, res) => {
   );
 
   const { body, statusCode } = await addFollowerController.handle({
+    body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+userRoutes.patch("/deleteFollower", async (req, res) => {
+  const deleteFollowerRepository = new DeleteFollowerRepository();
+
+  const deleteFollowerController = new DeleteFollowerController(
+    deleteFollowerRepository
+  );
+
+  const { body, statusCode } = await deleteFollowerController.handle({
     body: req.body,
   });
 
