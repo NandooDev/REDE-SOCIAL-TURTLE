@@ -20,7 +20,7 @@ model Users {
   email         String    @unique
   password      String    @db.VarChar(250)
   profile_photo String?
-  followers     Int?
+  followers     Int?      @default(0)
   bio           String?   @db.VarChar(100)
   role          String
   created_at    DateTime  @default(now())

@@ -16,6 +16,8 @@ import { GetUsersByUsernameController } from "../../controllers/user/getUsersByU
 import { AuthenticateToken } from "../../auth/authenticateToken/authenticateToken";
 import bodyParser from "body-parser";
 import { storage } from "../../services/multerConfig";
+import { AddFollowerRepository } from "../../repositories/user/addFollower/addFollowerRepository";
+import { AddFollowerController } from "../../controllers/user/addFollower/addFollowerController";
 
 const userRoutes: Router = Router();
 
@@ -115,6 +117,20 @@ userRoutes.get("/findUsername", async (req, res) => {
   console.log(req.body.username);
 
   const { body, statusCode } = await getUsersByUsernameController.handle({
+    body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+userRoutes.patch("/addFollower", async (req, res) => {
+  const addFollowerRepository = new AddFollowerRepository();
+
+  const addFollowerController = new AddFollowerController(
+    addFollowerRepository
+  );
+
+  const { body, statusCode } = await addFollowerController.handle({
     body: req.body,
   });
 
