@@ -36,8 +36,8 @@ model Posts {
   content    String    @db.VarChar(250)
   attachment String?
   published  Boolean
-  user       Users     @relation(fields: [id_user], references: [id])
-  id_user    String    @unique
+  user       Users     @relation(fields: [id_user], references: [id], onDelete: Cascade)
+  id_user    String
   coments    Coments[]
   likes      Likes[]
   created_at DateTime  @default(now())
@@ -46,17 +46,17 @@ model Posts {
 model Coments {
   id      String @id @default(uuid())
   content String @db.VarChar(100)
-  post    Posts  @relation(fields: [id_post], references: [id])
-  id_post String @unique
-  user    Users  @relation(fields: [id_user], references: [id])
-  id_user String @unique
+  post    Posts  @relation(fields: [id_post], references: [id], onDelete: Cascade)
+  id_post String
+  user    Users  @relation(fields: [id_user], references: [id], onDelete: Cascade)
+  id_user String
 }
 
 model Likes {
   id         String   @id @default(uuid())
-  post       Posts    @relation(fields: [id_post], references: [id])
-  id_post    String   @unique
-  user       Users    @relation(fields: [id_user], references: [id])
-  id_user    String   @unique
+  post       Posts    @relation(fields: [id_post], references: [id], onDelete: Cascade)
+  id_post    String
+  user       Users    @relation(fields: [id_user], references: [id], onDelete: Cascade)
+  id_user    String
   created_at DateTime @default(now())
 }
