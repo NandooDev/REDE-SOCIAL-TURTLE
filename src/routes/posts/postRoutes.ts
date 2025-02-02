@@ -40,8 +40,10 @@ postRoutes.post(
     const createPostRepository = new CreatePostRepository();
 
     const createPostController = new CreatePostController(createPostRepository);
-
-    req.body.attachment = `http://localhost:3000/files/${req.file.filename}`;
+    
+    if (req.file) {
+      req.body.attachment = `http://localhost:3000/files/${req.file.filename}`;
+    }
 
     if (req.body.published === "true") {
       req.body.published = true;
