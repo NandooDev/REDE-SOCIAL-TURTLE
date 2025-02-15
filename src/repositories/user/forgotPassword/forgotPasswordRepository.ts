@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 export class ForgotPasswordRepository implements IForgotPasswordRepository {
   async forgotPassword(
     email: string,
-    currentPassword: string,
     newPassword: string
   ): Promise<string> {
     try {

@@ -17,11 +17,7 @@ export class ForgotPasswordController implements IForgotPasswordController {
     httpRequest: IHttpRequest<IForgotPasswordParams>
   ): Promise<IHttpResponse<string>> {
     try {
-      const { currentPassword, newPassword } = httpRequest.body!;
-      const email = httpRequest.params.email;
-
-      const cryptographyCurrentPassword =
-        await this.cryptographyPassword.execute(currentPassword);
+      const { email, currentPassword, newPassword } = httpRequest.body!;
 
       const cryptographyNewPassword =
         await this.cryptographyPassword.execute(newPassword);
@@ -61,7 +57,6 @@ export class ForgotPasswordController implements IForgotPasswordController {
       }
       const response = await this.forgotPasswordRepository.forgotPassword(
         email,
-        cryptographyCurrentPassword,
         cryptographyNewPassword
       );
 

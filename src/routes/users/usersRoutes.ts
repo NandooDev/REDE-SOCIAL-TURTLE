@@ -158,7 +158,7 @@ userRoutes.patch("/deleteFollower", async (req, res) => {
   res.status(statusCode).send(body);
 });
 
-userRoutes.patch("/forgot-password/:email", async (req, res) => {
+userRoutes.patch("/forgot-password", async (req, res) => {
   const forgotPasswordRepository = new ForgotPasswordRepository();
   const cryptographyPassword = new CryptographyPassword();
   const verifyPassword = new VerifyPassword();
@@ -171,7 +171,6 @@ userRoutes.patch("/forgot-password/:email", async (req, res) => {
 
   const { body, statusCode } = await forgotPasswordController.handle({
     body: req.body,
-    params: req.params,
   });
 
   res.status(statusCode).send(body);
