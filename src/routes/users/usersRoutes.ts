@@ -20,6 +20,9 @@ import { AddFollowerRepository } from "../../repositories/user/addFollower/addFo
 import { AddFollowerController } from "../../controllers/user/addFollower/addFollowerController";
 import { DeleteFollowerRepository } from "../../repositories/user/deleteFollower/deleteFollowerRepository";
 import { DeleteFollowerController } from "../../controllers/user/deleteFollower/deleteFollowerController";
+import { ForgotPasswordRepository } from "../../repositories/user/forgotPassword/forgotPasswordRepository";
+import { ForgotPasswordController } from "../../controllers/user/forgotPassword/forgotPasswordController";
+import { VerifyPassword } from "../../cryptography/verifyPassword";
 
 const userRoutes: Router = Router();
 
@@ -150,6 +153,25 @@ userRoutes.patch("/deleteFollower", async (req, res) => {
 
   const { body, statusCode } = await deleteFollowerController.handle({
     body: req.body,
+  });
+
+  res.status(statusCode).send(body);
+});
+
+userRoutes.patch("/forgot-password/:email", async (req, res) => {
+  const forgotPasswordRepository = new ForgotPasswordRepository();
+  const cryptographyPassword = new CryptographyPassword();
+  const verifyPassword = new VerifyPassword();
+
+  const forgotPasswordController = new ForgotPasswordController(
+    forgotPasswordRepository,
+    cryptographyPassword,
+    verifyPassword
+  );
+
+  const { body, statusCode } = await forgotPasswordController.handle({
+    body: req.body,
+    params: req.params,
   });
 
   res.status(statusCode).send(body);
