@@ -22,7 +22,6 @@ import { DeleteFollowerRepository } from "../../repositories/user/deleteFollower
 import { DeleteFollowerController } from "../../controllers/user/deleteFollower/deleteFollowerController";
 import { ForgotPasswordRepository } from "../../repositories/user/forgotPassword/forgotPasswordRepository";
 import { ForgotPasswordController } from "../../controllers/user/forgotPassword/forgotPasswordController";
-import { VerifyPassword } from "../../cryptography/verifyPassword";
 
 const userRoutes: Router = Router();
 
@@ -161,12 +160,10 @@ userRoutes.patch("/deleteFollower", async (req, res) => {
 userRoutes.patch("/forgot-password", async (req, res) => {
   const forgotPasswordRepository = new ForgotPasswordRepository();
   const cryptographyPassword = new CryptographyPassword();
-  const verifyPassword = new VerifyPassword();
 
   const forgotPasswordController = new ForgotPasswordController(
     forgotPasswordRepository,
-    cryptographyPassword,
-    verifyPassword
+    cryptographyPassword
   );
 
   const { body, statusCode } = await forgotPasswordController.handle({

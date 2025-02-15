@@ -2,7 +2,6 @@ import { IHttpRequest, IHttpResponse } from "../../protocols";
 
 export interface IForgotPasswordParams {
   email: string;
-  currentPassword: string;
   newPassword: string;
 }
 
@@ -15,7 +14,6 @@ export interface IForgotPasswordController {
 export interface IForgotPasswordRepository {
   forgotPassword(
     email: string,
-    currentPassword: string,
     newPassword: string
   ): Promise<string>;
 }
