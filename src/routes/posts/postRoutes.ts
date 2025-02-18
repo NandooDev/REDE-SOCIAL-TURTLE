@@ -13,6 +13,9 @@ import { AuthenticateToken } from "../../auth/authenticateToken/authenticateToke
 import bodyParser from "body-parser";
 import multer from "multer";
 import { storage } from "../../services/multerConfig";
+import sharp from "../../../node_modules/sharp/lib/index";
+import path from "path";
+import fs from "fs";
 
 const postRoutes = Router();
 
@@ -38,19 +41,42 @@ postRoutes.post(
   upload.single("file"),
   async (req, res) => {
     const createPostRepository = new CreatePostRepository();
-
     const createPostController = new CreatePostController(createPostRepository);
-    
+
     if (req.file) {
-      req.body.attachment = `http://localhost:3000/files/${req.file.filename}`;
+      try {
+        console.log("Arquivo recebido:", req.file); 
+
+        const resizedFilename = `resized-${Date.now()}.jpg`;
+        const outputPath = path.join(__dirname, "../../../uploads", resizedFilename);
+
+        await sharp(req.file.path)
+          .resize({ width: 400, height: 400 })
+          .toFormat("jpeg")
+          .jpeg({ quality: 100 })
+          .toFile(outputPath);
+
+        // Remove o arquivo original após o processamento
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.error('Erro ao excluir o arquivo:', err);
+          } else {
+            console.log('Arquivo excluído com sucesso!');
+          }
+        });
+
+        // Define o caminho da imagem redimensionada no corpo da requisição
+        req.body.attachment = `http://localhost:3000/files/${resizedFilename}`;
+      } catch (error) {
+        console.error("Erro ao processar a imagem:", error);
+        return res.status(500).json({ error: "Erro ao processar a imagem" });
+      }
     }
 
-    if (req.body.published === "true") {
-      req.body.published = true;
-    } else if (req.body.published === "false") {
-      req.body.published = false;
-    }
+    // Converte published para booleano
+    req.body.published = req.body.published === "true";
 
+    // Chama o controller
     const { body, statusCode } = await createPostController.handle({
       body: req.body,
     });
